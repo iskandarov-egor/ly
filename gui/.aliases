@@ -1,0 +1,3 @@
+alias b='go build'
+alias r='./gui'
+alias br='b && r'

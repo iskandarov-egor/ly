@@ -1,0 +1,35 @@
+materials:
+  glass:
+    type: glass
+objects:
+  lamp:
+    type: plane
+    size: [2, 2]
+    position: [-0, 0, 0]
+    orientation: -y
+    glow: [1, 1, 1]
+  planeFar:
+    type: plane
+    size: [2, 2]
+    position: [-0, 0, 0]
+    orientation: -y
+    glow: [1, 1, 1]
+lights:
+cameras:
+  cam1:
+    type: perspective
+    position: [0.0, -3.31, 0]
+    target: [0., 0, 0]
+    fov: 0.94
+    zoom: 1
+profiles:
+  main:
+    width: 400
+    height: 400
+    pixel_samples: 100
+    tracer: direct
+goroutines: 4
+active_camera: cam1
+#accelerator: bvh
+
+

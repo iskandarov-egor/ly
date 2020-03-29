@@ -1,0 +1,81 @@
+materials:
+  matte:
+    type: matte
+    color: [0.1, 0.2, 0.9]
+    roughness: 0
+  metal:
+    type: metal
+    roughness: 0.005
+  glass:
+    type: glass
+  floor:
+    type: matte
+    texture: files/textures/colorgrid.png
+objects:
+  floor:
+    type: plane
+    size: [1, 1]
+    position: [0, 0, 0]
+    orientation: +z
+    material: floor
+  matte1: # LB
+    type: plane
+    size: [0.4, 0.2]
+    position: [0.0, 0.4, 0.1]
+    orientation: -y
+    material: matte
+  matte2: #LB
+    type: plane
+    size: [0.4, 0.2]
+    position: [0.0, 0.4, 0.1]
+    orientation: +x
+    material: matte
+  metal1: #LT
+    type: plane
+    size: [0.4, 0.2]
+    position: [0.0, -0.4, 0.1]
+    orientation: -y
+    material: metal
+  metal2: #LT
+    type: plane
+    size: [0.4, 0.2]
+    position: [0.0, -0.4, 0.1]
+    orientation: +x
+    material: metal
+  glass1: #RB
+    type: plane
+    size: [0.2, 0.4]
+    position: [0.3, -0.25, 0.1]
+    orientation: +x
+    material: glass
+  glass2: #RB
+    type: plane
+    size: [0.2, 0.4]
+    position: [0.3, 0.25, 0.1]
+    orientation: -x
+    material: glass
+  mirror1: # RT
+    type: plane
+    size: [0.2, 0.4]
+    position: [-0.3, -0.25, 0.2]
+    orientation: -x
+    material: mirror
+  mirror2: #RT
+    type: plane
+    size: [0.2, 0.4]
+    position: [-0.3, 0.25, 0.2]
+    orientation: +x
+    material: mirror
+lights:
+  sun:
+    type: infinite
+    texture: "files/textures/skylight-room.png"
+    scale: 2
+    direction: 90
+cameras:
+  cam1:
+    type: orthographic
+    position: [1.2, 0.8, 1]
+    target: [0, 0, 0]
+    zoom: 1
+active_camera: cam1

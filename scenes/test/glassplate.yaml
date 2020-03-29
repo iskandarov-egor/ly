@@ -1,0 +1,56 @@
+materials:
+  glass:
+    type: glass
+    color: [1, 0, 0]
+    reflection_color: [0, 0, 0]
+  blu:
+    type: matte
+    color: [0, 0, 0]
+objects:
+  lamp:
+    type: plane
+    size: [0.5, 0.5]
+    position: [-0, 0, 0]
+    orientation: +z
+    glow: [1, 1, 1]
+    material: blu
+  test:
+    type: plane
+    size: [0.5, 0.5]
+    position: [0.5, -0.5, 0.5]
+    orientation: -z
+    material: glass
+  test1:
+    type: plane
+    size: [0.5, 0.5]
+    position: [-0.3, 0.1, 0.25]
+    orientation: -y
+    material: glass
+  kruh:
+    type: sphere
+    position: [-0.25, -0.25, 0]
+    radius: 0.2
+    material: glass
+#  kruh2:
+#    type: sphere
+#    position: [-0.1, 0.25, 0]
+#    radius: 0.3
+#    material: d2
+lights:
+cameras:
+  cam1:
+    type: perspective
+    position: [0.35, -0.4, 1]
+    target: [0., 0, 0]
+    zoom: 0.7
+profiles:
+  main:
+    width: 200
+    height: 200
+    pixel_samples: 100
+    tracer:
+      type: direct
+goroutines: 4
+active_camera: cam1
+#accelerator: bvh
+

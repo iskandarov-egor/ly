@@ -1,0 +1,66 @@
+materials:
+  ground:
+    type: matte
+    color: [1, 1, 1]
+    roughness: 0
+  glass:
+    type: glass
+    color: [1, 0, 0]
+#    color: [0, 0, 0]
+#    reflection_color: [0, 0, 0]
+  plastic:
+    type: layer
+    base:
+      type: matte
+      color: [1, 1, 1]
+objects:
+  floor:
+    type: plane
+    size: [5.0, 5.0]
+    position: [0, 0, 0]
+    orientation: +z
+    material: ground
+  dice:
+    type: obj
+    path: "scenes/dice/dice1.obj"
+    transformation:
+      - translate: [0, 0, 1.01]
+      - scale: [0.02, 0.02, 0.02]
+    override_materials:
+      cube_Mesh: glass
+      holes_Mesh.001: plastic
+lights:
+#  sun:
+#    type: directional
+#    direction: [1, -1, -1]
+#    color: [3, 3, 3]
+  realsun:
+    type: infinite
+    texture: "scenes/dice/skylight-room-blue.png"
+    scale: 2.5
+    direction: 90
+cameras:
+  cam1:
+    type: perspective
+    position: [0.24, 0.16, 0.2]
+    #position: [0.024, 0.016, 0.4]
+    target: [0, 0, 0.02]
+    zoom: 2
+profiles:
+  full:
+    width: 1000
+    height: 1000
+    pixel_samples: 400
+    tracer:
+      type: path
+  q:
+    width: 400
+    height: 400
+    pixel_samples: 20
+    tracer:
+      type: path
+goroutines: 4
+profile: q
+active_camera: cam1
+accelerator: bvh
+outfile: "test/qqq.png"

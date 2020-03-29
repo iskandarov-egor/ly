@@ -1,0 +1,219 @@
+materials:
+  floor2:
+    type: matte
+    color: [0.32, 0.24, 0.16]
+    #color: [0.15, 0.10, 0.1]
+    #color: [0.15, 0.08, 0.012]
+    roughness: 0
+  floor:
+    type: matte
+    texture: scenes/lens/floorboard.png
+    roughness: 0
+  floorboards:
+    type: blend_map
+    map: scenes/lens/floorboard_mask.png
+    black:
+      type: matte
+      texture: scenes/lens/floorboard.png
+    white:
+      type: layer
+      base:
+        type: matte
+        texture: scenes/lens/floorboard.png
+  walls:
+    type: matte
+    #color: [0.8, 0.7, 0.6]
+    color: [0.3,0.3,0.3]
+    #texture: files/textures/wallpaper2.png
+    roughness: 0
+  lamp_pole:
+    type: matte
+    color: [0.1, 0.1, 0.1]
+    roughness: 0
+  white:
+    type: matte
+    color: [1, 1, 1]
+    roughness: 0
+  ceil:
+    type: matte
+    color: [0.7, 0.7, 0.7]
+    roughness: 0.5
+  base:
+    type: layer
+    base:
+      type: matte
+      color: [0.040, 0.08, 0.072]
+  wood:
+    type: layer
+    base:
+      type: matte
+      #color: [0.8, 0.8, 0.1]
+      texture: scenes/lens/wood2.png
+  pencil_nose:
+    type: matte
+    color: [0.8, 0.8, 0.6]
+  graphite:
+    type: matte
+    color: [0.2, 0.2, 0.2]
+  pencil:
+    type: layer
+    base:
+      type: matte
+      color: [0.97, 0.66, 0.2]
+  bucket:
+    type: layer
+    base:
+      type: matte
+      color: [0.3, 0.12, 0.04]
+  glass:
+    type: glass
+    #reflection_color: [0,0,0]
+    refractive_index: 1.5
+  shell:
+    type: glass
+#    reflection_color: [0,0,0]
+    refractive_index: 4
+    roughness: 0.9
+  shell2:
+    type: matte
+    is_transparent: true
+    roughness: 0.9
+    color: [1, 0.85, 0.7]
+  met:
+    type: metal
+    roughness: 0.003
+objects:
+  obj:
+    type: obj
+    path: "scenes/lens/lens.obj"
+    override_materials:
+      screen: white
+      floor: floorboards
+      walls: walls
+      ceil: ceil
+      lenz: glass
+      lamp: white
+      shell: shell2
+      Cylinder: met
+      Cylinder.000: met
+      Cylinder.001: met
+      Cylinder.004: met
+      Cylinder.005: met
+      Cylinder.006: met
+      Cylinder.007: met
+      Cylinder.008: met
+      Cylinder.009: met
+      Cylinder.010: met
+      Cylinder.011: met
+      Cylinder.012: met
+      Cylinder.013: met
+      Cylinder.014: met
+      Cylinder.015: met
+      Cylinder.017: met
+      Cylinder.018: met
+      Cylinder.019: met
+      ramka: met
+      plashka: met
+      plashka.001: met
+      plashka.002: met
+      plashka.003: met
+      plashka.004: met
+      Icosphere: met
+      Icosphere.001: met
+      Icosphere.002: met
+      base: base
+      board: wood
+      board_leg_L: wood
+      board_leg_R: wood
+      board_leg_M: wood
+      bucket: bucket
+      lamp_cup: lamp_pole
+      pole: lamp_pole
+      ring_high: lamp_pole
+      ring_low: lamp_pole
+      x: lamp_pole
+      x_base: lamp_pole
+      pencil1: pencil
+      nose1: pencil_nose
+      graphite1: graphite
+    override_glow:
+      # orig
+      #lamp: [240, 240, 220]
+      #shell: [14, 12, 10]
+      lamp: [640, 600, 540]
+ #     shell: [4, 3, 2]
+ #     lamp: [720, 720, 600]
+ #     lamp: [1200, 0, 0]
+ #     x: [14, 10, 6]
+ #     shell: [0.00, 0.01, 0]
+ #     ceil: [0.5, 0.5, 0.5]
+lights:
+#  realsun:
+#    type: infinite
+#    #texture: "files/textures/skylight-room-blue.png"
+#    texture: "files/textures/skylight-room.png"
+#    #texture: "files/textures/skylight-morn.png"
+#    scale: 0.1
+#    #scale: 1.5
+#    direction: 90
+
+# f= 1.51
+# eta = 1.52
+# I = 1
+# lens - screen = 3
+# cam - screen = 5.9
+# R = 1.62014
+cameras:
+  cam1:
+    type: perspective
+    position: [4.95, -5.94, 4.68]
+    target: [0.056, -0.1528, -0.007]
+    zoom: 1
+    fov: 20
+  cam2:
+    type: perspective
+    position: [17.029, -11.618, 26.252]
+    target: [-21.32, 5.202, -8.558]
+    zoom: 0.9
+    fov: 30
+  cam3:
+    type: perspective
+    position: [13.575, -10.458, 23.381]
+    target: [-21, 6.3, -10.52]
+    zoom: 1
+    fov: 37.5
+profiles:
+  full:
+    width: 1000
+    height: 750
+    pixel_samples: 5000
+    tracer:
+      type: path
+  h:
+    width: 800
+    height: 600
+    pixel_samples: 2000
+    tracer: 
+      type: path
+  q:
+    width: 300
+    height: 225
+    pixel_samples: 10
+    tracer: 
+      type: path
+# R 8.68301 f 8.3
+# R 9.54624 f 9.13
+# R 20.8512 f 20
+# R 24.0499 f 24
+goroutines: 4
+#region: [70, 100, 190, 200]
+#region: [52, 75, 142, 150]
+#region: [300, 80, 350, 140]
+#region: [260, 111, 332, 170]
+#region: [0, 150, 200, 300]
+#region: [388, 50, 400, 700]
+profile: q
+active_camera: cam2
+accelerator: bvh
+outfile: "test/qqq.png"
+

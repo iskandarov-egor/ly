@@ -1,0 +1,68 @@
+materials:
+  ground:
+    type: matte
+    color: [0.4, 0.4, 0.4]
+    roughness: 0
+  blu:
+    type: matte
+    color: [0.1, 0.2, 0.9]
+    roughness: 0
+  met:
+    type: metal
+    roughness: 0.001
+  glass:
+    type: glass
+objects:
+  floor:
+    type: plane
+    size: [2.0, 2.0]
+    position: [0, 0, -0.001]
+    orientation: +z
+    material: ground
+#  lamp:
+#    type: plane
+#    size: [5.0, 5.0]
+#    position: [0, 0, 5]
+#    orientation: -z
+#    glow: [1, 1, 1]
+  box1:
+    type: box
+    center: [0.1, 0.3, 0.25]
+    width: 0.5
+    material: blu
+  box2:
+    type: box
+    center: [-0.2, -0.3, 0.25]
+    width: 0.5
+    material: blu
+lights:
+#  dir:
+#    type: directional
+#    direction: [-1, 1, -1]
+#    color: [1.5, 1.5, 1.5]
+  sun:
+    type: infinite
+    texture: "files/textures/skylight-room.png"
+    scale: 1
+    direction: 270
+cameras:
+  cam1:
+    type: perspective
+    position: [-2.7, -1.9, 2.1]
+    target: [0, 0, 0]
+    zoom: 1
+  camUp:
+    type: perspective
+    position: [0.01, 0.01, 4]
+    target: [0, 0, 0]
+    zoom: 1
+profiles:
+  main:
+    width: 302
+    height: 302
+    pixel_samples: 10
+    tracer:
+      type: path
+goroutines: 1
+active_camera: cam1
+#accelerator: bvh

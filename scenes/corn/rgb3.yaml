@@ -1,0 +1,107 @@
+materials:
+  room:
+    type: matte
+    color: [1, 1, 1]
+    roughness: 0.3
+  plastic1:
+    type: layer
+    base:
+      type: matte
+      color: [1, 1, 1]
+  plastic2:
+    type: layer
+    base:
+      type: matte
+      color: [0, 1, 0]
+  met:
+    type: metal
+    roughness: 0.009
+  met2:
+    type: metal
+    roughness: 0.003
+  met3:
+    type: metal
+    roughness: 0.001
+  met4:
+    type: metal
+    roughness: 0.000
+  glass:
+    type: glass
+    roughness: 0
+  glass2:
+    type: glass
+    roughness: 0.004
+  glass3:
+    type: glass
+    roughness: 0.016
+  glass4:
+    type: glass
+    roughness: 0.064
+_transform: &transform
+  - rotate:
+     angle: -20
+  - translate: [0.15, -0.12, 0]
+objects:
+  room:
+    type: obj
+    path: scenes/corn/room.obj
+    material: room
+    transformation:
+      - flip: 1
+  bol:
+    type: sphere
+    position: [00, -0.0, -0.0]
+    radius: 0.2
+    material: glass
+  lampR:
+    type: plane
+    size: [0.6, 0.3]
+    position: [-0.4999, 0, +0.3]
+    orientation: +x
+    glow: [1, 0, 0]
+  lampG:
+    type: plane
+    size: [0.6, 0.3]
+    position: [-0.4999, 0, +0.]
+    orientation: +x
+    glow: [0, 1, 0]
+  lampB:
+    type: plane
+    size: [0.6, 0.3]
+    position: [-0.4999, 0, -0.3]
+    orientation: +x
+    glow: [0, 0, 1]
+lights:
+cameras:
+  cam1:
+    type: perspective
+    position: [0, -2.31, 0]
+    target: [-0., 0., -0.]
+    zoom: 1
+  camBol:
+    type: perspective
+    position: [0, -2.31, 0]
+    target: [-0.1, 0.1, -0.2]
+    zoom: 1
+profiles:
+  full:
+    width: 1000
+    height: 1000
+    pixel_samples: 10
+    tracer:
+      type: path
+  q:
+    width: 400
+    height: 400
+    pixel_samples: 10
+    tracer:
+      type: path
+profile: q
+#region: [900, 0, 910, 1000]
+#region: [170, 260, 400, 400]
+goroutines: 4
+active_camera: cam1
+outfile: test/rgb2.png
+accelerator: bvh
+
+

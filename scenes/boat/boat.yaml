@@ -1,0 +1,95 @@
+materials:
+  water:
+    type: layer
+    base:
+      type: matte
+      color: [0.05, 0.1, 0.02]
+    refractive_index: 1.3
+  metal:
+    type: metal
+    roughness: 0.005
+  matte_metal: &matte_metal
+    type: weighed_sum
+    materials:
+      - type: matte
+        color: [0.4, 0, 0]
+      - type: metal
+        color: [0.7, 0.0, 0.1]
+        roughness: 0.001
+    weights: [0.7, 0.3]
+  red_paint: &red_paint
+    type: matte
+    texture: scenes/boat/coke.png
+  red_layer:
+    type: layer
+    base:
+      type: blend_map
+      black: *matte_metal
+      white: *red_paint
+      map: scenes/boat/coke_mask.png
+objects:
+  floor:
+    type: plane
+    size: [15.0, 15.0]
+    position: [0, 0, 0.05]
+    orientation: +z
+    material: water
+  boat:
+    type: obj
+    path: "scenes/boat/soda_boat-5.obj"
+    override_materials:
+      Inside: metal
+      Boat: red_layer
+    transformation:
+      - scale: [0.045, 0.045, 0.045]
+      - translate: [-0.35, -0., 0.15]
+      - rotate:
+          angle: 90
+lights:
+  realsun:
+    type: infinite
+    #texture: "files/textures/sky/skylight-field-cloudy.png"
+    #texture: "files/textures/sky/skylight-woods-field.png"
+    texture: "scenes/boat/skylight-woods-dusk.png"
+    #scale: 2.5
+    scale: 2
+    #direction: 270
+    #direction: -90 # woods-field
+    #direction: 90 # field-cloudy
+    direction: 0 # woods-dusk
+cameras:
+  cam1:
+    type: perspective
+    position: [-1.7, -0.9, 1.1]
+    target: [0, 0, 0.25]
+    zoom: 1
+profiles:
+  full:
+    width: 1000
+    height: 1000
+    pixel_samples: 1600
+    tracer:
+      type: path
+  h:
+    width: 800
+    height: 800
+    pixel_samples: 100
+    tracer:
+      type: path
+  ql:
+    width: 1000
+    height: 1000
+    pixel_samples: 4
+    tracer:
+      type: path
+  q:
+    width: 400
+    height: 400
+    pixel_samples: 10
+    tracer:
+      type: path
+goroutines: 4
+profile: full
+active_camera: cam1
+accelerator: bvh
+outfile: "test/qqq.png"

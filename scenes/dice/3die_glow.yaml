@@ -1,0 +1,146 @@
+materials:
+  ground:
+    type: layer
+    base:
+      type: matte
+      color: [1, 1, 1]
+  ground2:
+    type: matte
+    color: [1, 1, 1]
+  red:
+    type: matte
+    color: [1, 0.05, 0.01]
+  glass:
+    type: glass
+    color: [1, 0, 0]
+  white_dots2:
+    type: layer
+    base:
+      type: matte
+      color: [0.2,  0.2, 0.2]
+  white_dots:
+    type: matte
+    color: [1, 1, 1]
+  met:
+    type: metal
+    roughness: 0.005
+  plastic2:
+    type: layer
+    base:
+      type: matte
+      color: [0.02, 0.5, 0.2]
+objects:
+  floor:
+    type: plane
+    size: [0.5, 0.5]
+    position: [0, 0, 0]
+    orientation: +z
+    material: ground2
+#  room:
+#    type: box
+#    center: [0., 0., 0.]
+#    width: 1
+#    material: white_dots
+  dice:
+    type: obj
+    path: "scenes/dice/dice1.obj"
+    transformation:
+      - translate: [0, 0, 1.01]
+      - scale: [0.015, 0.015, 0.015]
+      - translate: [0.019, -0.001, 0]
+    override_materials:
+      #cube_Mesh: glass
+      cube_Mesh: plastic2
+      holes_Mesh.001: white_dots
+  diceR:
+    type: obj
+    path: "scenes/dice/dice1.obj"
+    transformation:
+#      - rotate:
+#         axis: [0, 1, 0]
+#         angle: 90
+#      - rotate:
+#         axis: [1, 0, 0]
+#         angle: 90
+      - translate: [0, 0, 1.0]
+      - scale: [0.015, 0.015, 0.015]
+      - rotate:
+         angle: 195
+      - translate: [-0.025, 0.016, 0]
+    override_materials:
+      cube_Mesh: met
+      holes_Mesh.001: white_dots
+    override_glow:
+      holes_Mesh.001: [19, 19, 19]
+  diceL:
+    type: obj
+    path: "scenes/dice/dice1.obj"
+    transformation:
+      - rotate:
+         axis: [1, 0, 0]
+         angle: -90
+      - translate: [0, 0, 1.01]
+      - scale: [0.015, 0.015, 0.015]
+      - rotate:
+         angle: -10
+      - translate: [-0.02, -0.03, 0]
+    override_materials:
+      cube_Mesh: glass
+      holes_Mesh.001: white_dots
+lights:
+  room:
+    type: infinite
+    texture: "scenes/dice/skylight-const.png"
+    scale: 0.01
+cameras:
+  cam1:
+    type: perspective
+    position: [0.24, 0.16, 0.2]
+    #position: [0.024, 0.016, 0.4]
+    target: [0, 0, 0.02]
+    zoom: 2
+profiles:
+  full:
+    width: 1000
+    height: 1000
+    pixel_samples: 167
+    tracer:
+      type: path
+  fq:
+    width: 600
+    height: 600
+    pixel_samples: 10
+    tracer:
+      type: path
+  h:
+    width: 800
+    height: 800
+    pixel_samples: 40
+    tracer:
+      type: path
+  hq:
+    width: 500
+    height: 500
+    pixel_samples: 4
+    tracer: path
+  q:
+    width: 400
+    height: 400
+    pixel_samples: 10
+    tracer:
+      type: path
+  t:
+    width: 100
+    height: 100
+    pixel_samples: 800
+    tracer:
+      type: path
+profile: q
+#region: [178, 0, 186, 1000]
+#region: [337, 50, 380, 100]
+#region: [0, 0, 300, 600]
+goroutines: 4
+active_camera: cam1
+accelerator: bvh
+outfile: test/qqq.png
+

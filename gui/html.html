@@ -1,0 +1,29 @@
+<html>
+<script src="third/msgpack.js" ></script>
+<script src="client.js" ></script>
+<!--img style='display: none;' id="imgStub" src="rhino.jpeg"
+       width="300" height="227" crossorigin="anonymous"-->
+<div width="100%" height="10%">
+<label id='lblCoords' style='font-family: monospace; white-space: pre;'></label>
+<label id='lblSelection' style='font-family: monospace; white-space: pre;'></label>
+<button onclick="renderClick()">render</button>
+  <input type="radio" id="toolMove" name="tool" value="move" onchange="change(this)" checked>
+  <label for="move">Move</label>
+  <input type="radio" id="toolSelect" name="tool" value="select" onchange="change(this)">
+  <label for="select">Select</label>
+</div>
+<div id='canvasDiv' style='overflow: hidden; height: 90vh'>
+<canvas
+	id="canvas"
+	width="400"
+	height="400"
+	style='image-rendering: pixelated; background: black;'
+></canvas>
+</div>
+<script src="labels.js" ></script>
+<script src="stub.js" ></script>
+<script src="myimage.js" ></script>
+<script src="mainview.js" ></script>
+<script src="state.js" ></script>
+<script src="js.js" ></script>
+</html>

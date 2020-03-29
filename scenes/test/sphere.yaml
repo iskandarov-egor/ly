@@ -1,0 +1,58 @@
+materials:
+  bol:
+    type: metal
+    color: [1, 1, 1]
+    roughness: 0.0001
+  glass:
+    type: glass
+    color: [0,0,0]
+  matte:
+    type: matte
+    color: [1, 1, 1]
+  met:
+    type: metal
+    roughness: 0.005
+  plastic:
+    type: layer
+    bottom:
+      type: matte
+      color: [1, 1, 1]
+objects:
+  bol:
+    type: obj
+    path: "files/objects/sphere.obj"
+    transformation:
+      - scale: [0.1, 0.4, 0.4]
+    #type: "box"
+    #center: [0.0, 0.0, 0.0]
+    #width: 0.5
+    material: met
+  lamp:
+    type: plane
+    position: [0, 0, 1]
+    size: [1, 1]
+    orientation: "-z"
+    glow: [1, 1, 1]
+    material: bol
+lights:
+#  sun:
+#    type: infinite
+#    texture: "files/textures/skylight-morn.png"
+#    scale: 1
+#    direction: 270
+cameras:
+  cam1:
+    type: perspective
+    position: [0, 2, 1]
+    target: [0, 0, 0.2]
+    zoom: 2.5
+profiles:
+  main:
+    width: 400
+    height: 400
+    pixel_samples: 10
+    tracer:
+      type: path
+active_camera: cam1
+goroutines: 4
+accelerator: bvh
