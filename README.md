@@ -12,6 +12,9 @@ Made with the help of [pbr-book](http://www.pbr-book.org/)
 * lens. can see the lamp image projection and reflection from both sides of the lens.
 <img src="https://github.com/iskandarov-egor/ly/blob/master/gallery/jpeg/lens.jpg" height="400">
 
+* light animation
+<img src="https://github.com/iskandarov-egor/ly/blob/master/gallery/animations/slit.gif">
+
 * other images
 <p float="left">
 <img src="https://github.com/iskandarov-egor/ly/blob/master/gallery/jpeg/soda_boat.jpg" height="400">
