@@ -1,9 +1,9 @@
 package films
 
 import (
-	"ly/spectra"
 	"ly/img"
 	"ly/colors"
+	"ly/spectra"
 	"fmt"
 )
 
@@ -12,14 +12,21 @@ type Cell struct {
 	weight float32
 }
 
-type Film struct {
+type Film interface {
+	AddSample(x, y int, L spectra.Spectr, weight float32)
+	Width() int
+	Height() int
+	ToImage() img.Image3
+}
+
+type SimpleFilm struct {
 	W    int
 	H    int
 	Cells []Cell
 }
 
-func NewFilm(w int, h int) *Film {
-	f := Film{
+func NewFilm(w int, h int) *SimpleFilm {
+	f := SimpleFilm{
 		W:    w,
 		H:    h,
 		Cells: make([]Cell, w*h),
@@ -27,16 +34,24 @@ func NewFilm(w int, h int) *Film {
 	return &f
 }
 
-func (f *Film) AddSample(x, y int, s spectra.Spectr, weight float32) {
+func (f *SimpleFilm) Width() int {
+	return f.W
+}
+
+func (f *SimpleFilm) Height() int {
+	return f.H
+}
+
+func (f *SimpleFilm) AddSample(x, y int, L spectra.Spectr, weight float32) {
 	pos := (y*f.W + x)
-	X, Y, Z := s.XYZ()
+	X, Y, Z := L.XYZ()
 	f.Cells[pos].x += X*weight
 	f.Cells[pos].y += Y*weight
 	f.Cells[pos].z += Z*weight
 	f.Cells[pos].weight += weight
 }
 
-func (f *Film) ToImage() img.Image3 {
+func (f *SimpleFilm) ToImage() img.Image3 {
 	im := img.NewImage3(f.W, f.H, colors.XYZSpace)
 	ii := 0
 	for i, _ := range f.Cells {

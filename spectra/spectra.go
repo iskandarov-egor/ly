@@ -13,11 +13,11 @@ type Spectr interface {
 	RGB() (r, g, b float32)
 	BSDF(Spectr)
 	Mul(float32) Spectr
+	Add(float32) Spectr
 	SpectrMul(Spectr) Spectr
 	SpectrDiv(Spectr) Spectr
 	SpectrSub(Spectr) Spectr
 	SpectrAdd(Spectr) Spectr
-	Add(float32) Spectr
 	Sqrt() Spectr
 	IsBlack() bool
 	Power() float32
@@ -132,6 +132,117 @@ func (s *RGBSpectr) Mul(k float32) Spectr {
 	}
 	return s
 }
+
+type TimedSpectr struct {
+	Frames []Spectr
+}
+
+func (t *TimedSpectr) Clone() Spectr {
+	ret := TimedSpectr{
+		Frames: make([]Spectr, len(t.Frames)),
+	}
+	for i := range t.Frames {
+		ret.Frames[i] = t.Frames[i].Clone()
+	}
+	return &ret
+}
+
+func (t *TimedSpectr) XYZ() (x, y, z float32) {
+	panic("not impl")
+}
+
+func (t *TimedSpectr) RGB() (x, y, z float32) {
+	panic("not impl")
+}
+
+func (t *TimedSpectr) BSDF(s Spectr) {
+	for i := range t.Frames {
+		t.Frames[i].BSDF(s)
+	}
+}
+
+func (t *TimedSpectr) Mul(x float32) Spectr {
+	for i := range t.Frames {
+		t.Frames[i].Mul(x)
+	}
+	return t
+}
+
+func (t *TimedSpectr) Add(x float32) Spectr {
+	for i := range t.Frames {
+		t.Frames[i].Add(x)
+	}
+	return t
+}
+
+func (t *TimedSpectr) SpectrMul(s Spectr) Spectr {
+	for i := range t.Frames {
+		t.Frames[i].SpectrMul(s)
+	}
+	return t
+}
+
+func (t *TimedSpectr) SpectrDiv(s Spectr) Spectr {
+	for i := range t.Frames {
+		t.Frames[i].SpectrDiv(s)
+	}
+	return t
+}
+
+func (t *TimedSpectr) SpectrSub(s Spectr) Spectr {
+	for i := range t.Frames {
+		t.Frames[i].SpectrSub(s)
+	}
+	return t
+}
+
+func (t *TimedSpectr) SpectrAdd(s Spectr) Spectr {
+	for i := range t.Frames {
+		t.Frames[i].SpectrAdd(s)
+	}
+	return t
+}
+
+func (t *TimedSpectr) Sqrt() Spectr {
+	for i := range t.Frames {
+		t.Frames[i].Sqrt()
+	}
+	return t
+}
+
+func (t *TimedSpectr) IsBlack() bool {
+	for i := range t.Frames {
+		if !t.Frames[i].IsBlack() {
+			return false
+		}
+	}
+	return true
+}
+
+func (t *TimedSpectr) Power() float32 {
+	sum := float32(0)
+	for i := range t.Frames {
+		sum += t.Frames[i].Power()
+	}
+	return sum / float32(len(t.Frames))
+}
+
+func NewTimedSpectr(nframes int, initial Spectr) *TimedSpectr {
+	ret := TimedSpectr{
+		Frames: make([]Spectr, nframes),
+	}
+	for i := range ret.Frames {
+		ret.Frames[i] = initial.Clone()
+	}
+	return &ret
+}
+
+func (t *TimedSpectr) Assign(from, to int, s Spectr) {
+	for i := from; i < to; i++ {
+		t.Frames[i] = s.Clone()
+	}
+}
+
 /*
 
 type GraySpectr struct {

@@ -11,8 +11,8 @@ type Canvas struct {
 	Server *Server
 }
 
-func (c *Canvas) DrawBox(box geo.Box, cam cameras.Camera, color colors.RGBColor, film *films.Film) {
-	w, h := film.W, film.H
+func (c *Canvas) DrawBox(box geo.Box, cam cameras.Camera, color colors.RGBColor, film films.Film) {
+	w, h := film.Width(), film.Height()
 	line := func(p1, p2 geo.Vec3) {
 		x1, y1 := cam.PlotDot(p1)
 		x2, y2 := cam.PlotDot(p2)

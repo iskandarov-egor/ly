@@ -13,13 +13,13 @@ import (
 	"time"
 )
 
-func visualizeBVHTree(film *films.Film, tree *scene.BVHNode, world scene.Scene, cam cameras.Camera) {
+func visualizeBVHTree(film *films.SimpleFilm, tree *scene.BVHNode, world scene.Scene, cam cameras.Camera) {
 	server := gui.NewServer()
 	go server.Serve()
 
 	server.QueueOut <- gui.CanvasSizeMessage{
-		W: film.W,
-		H: film.H,
+		W: film.Width(),
+		H: film.Height(),
 	}
 	canvas := server.NewCanvas()
 
@@ -50,8 +50,8 @@ func visualizeBVHTree(film *films.Film, tree *scene.BVHNode, world scene.Scene, 
 	region := DrawRegion{
 		x1: 0,
 		y1: 0,
-		x2: film.W,
-		y2: film.H,
+		x2: film.Width(),
+		y2: film.Height(),
 	}
 	draw(&world, inspector, cam, film, 4, 10, region)
 	im := film.ToImage()

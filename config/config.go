@@ -217,6 +217,18 @@ type PathTracerConfig struct {
 	TerminationProb float32 `yaml:"termination_prob"`
 }
 
+type FTLTracerConfig struct {
+	TracerConfig          `yaml:",inline"`
+	MinDepth int          `yaml:"min_depth"`
+	TerminationProb float32 `yaml:"termination_prob"`
+	NFrames int           `yaml:"n_frames"`
+	Fps float32           `yaml:"fps"`
+	TimeOffset float32    `yaml:"time_offset"`
+	LightDuration float32 `yaml:"light_duration"`
+	SkipFirstSegment bool `yaml:"skip_first_segment"`
+	OutfilePattern   string `yaml:"outfile_pattern"`
+}
+
 type ProfileConfig struct {
 	Width  int `yaml:"width"`
 	Height int `yaml:"height"`
@@ -229,13 +241,14 @@ type Options struct {
 	Profile ProfileConfig `yaml:"topsecret"` // not shadowing "profile" from SceneConfig
 	Goroutines int  `yaml:"goroutines"`
 	Outfile string  `yaml:"outfile"`
-	Region  *[4]int `yaml:"region"`
+	Region  [4]int  `yaml:"region"`
 }
 
 type SceneConfig struct {
-	Options Options
+	Options *Options
 	Camera cameras.Camera
 	Tracer tracers.Tracer
+	FTLTracer *tracers.FTLTracer
 }
 
 type MaterialMap struct {
@@ -854,6 +867,7 @@ func Load(path string, world *scene.Scene) (*SceneConfig, error) {
 	replaceZeroWithDefaults(&options, Options{
 		Goroutines: 4,
 		Outfile: "out.png",
+		Region: [4]int{0, 0, profile.Width, profile.Height},
 	})
 	options.Profile = profile
 
@@ -868,9 +882,12 @@ func Load(path string, world *scene.Scene) (*SceneConfig, error) {
 
 	world.Preprocess()
 
-	var tracer tracers.Tracer
+	ret := SceneConfig{
+		Camera: camera,
+		Options: &options,
+	}
 	if profile.Tracer.Kind == 0 {
-		tracer = tracers.NewPathTracer(0, 0)
+		ret.Tracer = tracers.NewPathTracer(0, 0)
 	} else {
 		tracerType, err := DecodeType(&profile.Tracer)
 		if err != nil {
@@ -883,19 +900,40 @@ func Load(path string, world *scene.Scene) (*SceneConfig, error) {
 				if err != nil {
 					return nil, fmt.Errorf("load path tracer config: %s", err)
 				}
-				tracer = tracers.NewPathTracer(cfg.MinDepth, cfg.TerminationProb)
+				ret.Tracer = tracers.NewPathTracer(cfg.MinDepth, cfg.TerminationProb)
 			case "direct":
-				tracer = tracers.NewDirectTracer()
+				ret.Tracer = tracers.NewDirectTracer()
+			case "ftl":
+				var cfg FTLTracerConfig
+				err := profile.Tracer.Decode(&cfg)
+				if err != nil {
+					return nil, fmt.Errorf("load ftl tracer config: %s", err)
+				}
+				if cfg.Fps == 0 {
+					cfg.Fps = 1
+				}
+				if cfg.OutfilePattern == "" {
+					return nil, fmt.Errorf("load ftl tracer config: outfile_pattern required")
+				}
+				if cfg.NFrames == 0 {
+					return nil, fmt.Errorf("load ftl tracer config: n_frames required")
+				}
+				ret.FTLTracer = tracers.NewFTLTracer(
+					cfg.MinDepth,
+					cfg.TerminationProb,
+					cfg.NFrames,
+					cfg.Fps,
+				)
+				ret.FTLTracer.TimeOffset = cfg.TimeOffset
+				ret.FTLTracer.SkipFirstSegment = cfg.SkipFirstSegment
+				if cfg.LightDuration != 0 {
+					ret.FTLTracer.LightDuration = cfg.LightDuration
+				}
+				options.Outfile = cfg.OutfilePattern
 			case "dum":
-				break
 			default:
 				return nil, fmt.Errorf("unknown tracer: %q", tracerType)
 		}
-	}
-	ret := SceneConfig{
-		Camera: camera,
-		Options: options,
-		Tracer: tracer,
 	}
 	return &ret, nil
 }

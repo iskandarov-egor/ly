@@ -113,6 +113,48 @@ func logProgress(progress float32, dt time.Duration) {
 	)
 }
 
+func renderFTLAnimation(world *scene.Scene, conf *config.SceneConfig) error {
+	var err error
+	options := conf.Options
+	film := films.NewFTLFilm(
+		options.Profile.Width,
+		options.Profile.Height,
+		conf.FTLTracer.Fps,
+		conf.FTLTracer.NFrames,
+	)
+	r := options.Region
+	region := DrawRegion{r[0], r[1], r[2], r[3]}
+
+	startTime := time.Now()
+	drawing := startFTLDrawing(
+		world,
+		conf.FTLTracer,
+		conf.Camera,
+		film,
+		options.Goroutines,
+		options.Profile.PixelSamples,
+		region,
+	)
+
+	logTicker := time.NewTicker(5 * time.Second)
+	for done := false; !done; {
+		select {
+			case <-drawing.Done:
+				done = true
+			case <-logTicker.C:
+				logProgress(drawing.GetProgress(), time.Since(startTime))
+		}
+	}
+	for i, frame := range film.Frames {
+		im := frame.ToImage()
+		err = im.SavePng(fmt.Sprintf(options.Outfile, i))
+		if err != nil {
+			return fmt.Errorf("save animation frame %d: %s", i, err)
+		}
+	}
+	return nil
+}
+
 func renderFile(path string) error {
 	world := scene.Scene{}
 	conf, err := config.Load(path, &world)
@@ -120,14 +162,16 @@ func renderFile(path string) error {
 		return fmt.Errorf("load scene file %q: %s", path, err)
 	}
 	options := conf.Options
-	film := films.NewFilm(options.Profile.Width, options.Profile.Height)
-	
-	region := DrawRegion{y1: 0, y2: film.H, x1: 0, x2: film.W}
-	if options.Region != nil {
-		r := options.Region
-		region = DrawRegion{x1: r[0], y1: r[1], x2: r[2], y2: r[3]}
+	r := options.Region
+	region := DrawRegion{r[0], r[1], r[2], r[3]}
+	var drawing *Drawing
+	if conf.FTLTracer != nil {
+		return renderFTLAnimation(&world, conf)
 	}
-	drawing := startDrawing(
+
+	film := films.NewFilm(options.Profile.Width, options.Profile.Height)
+	startTime := time.Now()
+	drawing = startDrawing(
 		&world,
 		conf.Tracer,
 		conf.Camera,
@@ -136,8 +180,6 @@ func renderFile(path string) error {
 		options.Profile.PixelSamples,
 		region,
 	)
-
-	startTime := time.Now()
 
 	saveTicker := time.NewTicker(time.Duration(options.Profile.SaveInterval) * time.Second)
 	logTicker := time.NewTicker(5 * time.Second)
@@ -149,13 +191,6 @@ func renderFile(path string) error {
 				logProgress(drawing.GetProgress(), time.Since(startTime))
 			case <-saveTicker.C:
 				//drawing.Pause()
-				im := film.ToImage()
-				err := im.SavePng(options.Outfile)
-				if err != nil {
-					log.Printf("error saving intermediate image: %s", err)
-				} else {
-					log.Printf("saved intermediate image %s", options.Outfile)
-				}
 				//drawing.Unpause()
 		}
 	}

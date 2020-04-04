@@ -1,0 +1,74 @@
+materials:
+  room:
+    type: matte
+    texture: scenes/corn/cube.png
+    roughness: 0.3
+  box:
+    type: matte
+    color: [0.1, 0.2, 0.9]
+    roughness: 0
+  black:
+    type: matte
+    color: [0, 0, 0]
+    roughness: 0
+objects:
+  room:
+    type: obj
+    path: scenes/corn/room_window2.obj
+    material: room
+  lamp:
+    type: plane
+    size: [0.5, 0.5]
+    position: [-0.4999, 0, 0]
+    orientation: +x
+    glow: [3, 3, 3]
+    material: black
+  box1:
+    type: box
+    center: [0, 0, 0]
+    width: 1
+    material: box
+    transformation:
+      - scale: [0.1, 1, 0.45]
+      - translate: [0, 0, 0.275]
+  box2:
+    type: box
+    center: [0, 0, 0]
+    width: 1
+    material: box
+    transformation:
+      - scale: [0.1, 1, 0.45]
+      - translate: [0, 0, -0.275]
+lights:
+cameras:
+  cam1:
+    type: perspective
+    position: [0, -2.31, 0]
+    target: [-0., 0., -0.]
+    zoom: 1
+profiles:
+  q:
+    width: 400
+    height: 400
+    pixel_samples: 4
+    tracer:
+      type: path
+  ftl:
+    width: 400
+    height: 400
+    pixel_samples: 400
+    tracer:
+      type: ftl
+      outfile_pattern: "test/ftl/frame%03d.png"
+      n_frames: 120
+      fps: 30
+      #time_offset: 2
+      skip_first_segment: true
+      light_duration: 1.8
+profile: ftl
+#region: [200, 0, 400, 400]
+goroutines: 4
+outfile: test/qqq.png
+active_camera: cam1
+#accelerator: bvh
+
